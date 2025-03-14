@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 public class Mensaje {
-    private Integer id;
+    private Long id;
 
     private Usuario remitente;
 

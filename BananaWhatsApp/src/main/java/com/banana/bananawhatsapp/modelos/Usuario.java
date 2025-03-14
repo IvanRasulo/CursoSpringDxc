@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 public class Usuario {
-    private Integer id;
+    private Long id;
     private String nombre;
     private String email;
     private LocalDate alta;
