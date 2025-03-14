@@ -17,11 +17,11 @@ public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "from_user")
     private Usuario remitente;
 
-    @OneToMany()
+    @ManyToOne
     @JoinColumn(name = "to_user")
     private Usuario destinatario;
 
