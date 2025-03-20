@@ -18,14 +18,29 @@ public interface IAccountController {
     ResponseEntity getAccount(@PathParam(value = "id") Long id);
 
 
-    @GetMapping(value = "/{ownerId}")
+    @GetMapping(value = "/getAll/{ownerId}")
     ResponseEntity getAccountsByOwnerId(@PathParam(value = "ownerId") Long ownerId);
 
     @PostMapping(value = "")
     ResponseEntity create (@Valid @RequestBody Account account);
 
-    @PutMapping(value = "/{id}")
-    ResponseEntity updateAccount(@PathParam(value = "id") Long id);
+    @PutMapping(value = "/update/{id}")
+    ResponseEntity updateAccount(@PathParam(value = "id") Long id, Account account);
+
+    @DeleteMapping(value = "/delete/{id}")
+    ResponseEntity delete(@PathParam(value = "id") Long id);
+
+    @PutMapping(value = "/{ownerId}/{accountId}/addbalance?amount={amount}")
+    ResponseEntity addBalance(@PathVariable(value = "ownerId") Long ownerId, @PathVariable(value = "id") Long id, @PathParam(value = "amount") int amount);
+
+    @DeleteMapping(value = "/deleteAll/{ownerId}")
+    ResponseEntity deleteAccountsUsingOwnerId(@PathParam(value = "ownerId") Long ownerId);
+
+    @PutMapping(value = "/{ownerId}/{accountId}/withdrawBalance?amount={amount}")
+    ResponseEntity withdrawBalance(@PathVariable(value = "ownerId") Long ownerId, @PathVariable(value = "id") Long id, @PathParam(value = "amount") int amount);
+
+
+
 
 
 }
