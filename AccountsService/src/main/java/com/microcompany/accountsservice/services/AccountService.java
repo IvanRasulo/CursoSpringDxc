@@ -83,5 +83,14 @@ public class AccountService implements IAccountService {
         }
     }
 
+    @Override
+    public boolean esPosiblePrestamo(Long customerId, Double loanAmount) {
+        List<Account> accounts = getAccountByOwnerId(customerId);
+        double totalBalance = accounts.stream()
+                                      .mapToDouble(Account::getBalance)
+                                      .sum();
+        return loanAmount <= (totalBalance * 0.8);
+    }
+
 
 }

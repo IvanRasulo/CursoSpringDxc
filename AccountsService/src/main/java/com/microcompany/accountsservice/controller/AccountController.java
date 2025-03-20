@@ -91,4 +91,9 @@ public class AccountController implements IAccountController{
     public ResponseEntity getAccountsByOwnerId(Long ownerId){
         return ResponseEntity.status(HttpStatus.OK.value()).body(servicioAccount.getAccountByOwnerId(ownerId));
     }
+    @Override
+    public ResponseEntity<Boolean> comprobarPrestamo(Long customerId, Double loanAmount) {
+        boolean isEligible = servicioAccount.esPosiblePrestamo(customerId, loanAmount);
+        return ResponseEntity.ok(isEligible);
+    }
 }

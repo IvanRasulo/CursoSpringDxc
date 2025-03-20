@@ -31,13 +31,16 @@ public interface IAccountController {
     ResponseEntity delete(@PathParam(value = "id") Long id);
 
     @PutMapping(value = "/{ownerId}/{accountId}/addbalance?amount={amount}")
-    ResponseEntity addBalance(@PathVariable(value = "ownerId") Long ownerId, @PathVariable(value = "id") Long id, @PathParam(value = "amount") int amount);
+    ResponseEntity addBalance(@PathParam(value = "ownerId") Long ownerId, @PathParam(value = "id") Long id, @RequestParam(value = "amount") int amount);
 
     @DeleteMapping(value = "/deleteAll/{ownerId}")
     ResponseEntity deleteAccountsUsingOwnerId(@PathParam(value = "ownerId") Long ownerId);
 
     @PutMapping(value = "/{ownerId}/{accountId}/withdrawBalance?amount={amount}")
-    ResponseEntity withdrawBalance(@PathVariable(value = "ownerId") Long ownerId, @PathVariable(value = "id") Long id, @PathParam(value = "amount") int amount);
+    ResponseEntity withdrawBalance(@PathParam(value = "ownerId") Long ownerId, @PathParam(value = "id") Long id, @RequestParam(value = "amount") int amount);
+
+    @GetMapping("/{ownerId}/prestamo?amount={amount}")
+    ResponseEntity<Boolean> comprobarPrestamo(@PathParam(value = "ownerId") Long ownerId, @RequestParam(value = "amount") Double amount);
 
 
 
