@@ -1,6 +1,8 @@
 package com.microcompany.accountsservice.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,6 +30,7 @@ public class Account {
 
     private Long ownerId;
 
+    @JsonIgnore
     @Transient
     Customer owner;
 
