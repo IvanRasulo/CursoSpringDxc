@@ -1,6 +1,7 @@
 package com.microcompany.accountsservice.services;
 
 import com.microcompany.accountsservice.exception.AccountNotfoundException;
+import com.microcompany.accountsservice.exception.OwnerNotFoundException;
 import com.microcompany.accountsservice.model.Account;
 import com.microcompany.accountsservice.model.Customer;
 import com.microcompany.accountsservice.persistence.AccountRepository;
@@ -41,7 +42,12 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Account> getAccountByOwnerId(Long ownerId) {
-        return accountRepository.findByOwnerId(ownerId);
+        List<Account> accs = accountRepository.findByOwnerId(ownerId);
+        if(accs.size()>0){
+            return accs;
+        } else {
+            throw new OwnerNotFoundException(ownerId);
+        }
     }
 
     @Override
@@ -79,18 +85,22 @@ public class AccountService implements IAccountService {
     @Override
     public void deleteAccountsUsingOwnerId(Long ownerId) {
         List<Account> accounts = accountRepository.findByOwnerId(ownerId);
-        for (Account account : accounts) {
-            this.accountRepository.delete(account);
-        }
+        if(accounts.size()>0) {
+            for (Account account : accounts) {
+                this.accountRepository.delete(account);
+            }
+        } else throw new OwnerNotFoundException(ownerId);
     }
 
     @Override
     public boolean esPosiblePrestamo(Long customerId, Double loanAmount) {
         List<Account> accounts = getAccountByOwnerId(customerId);
-        double totalBalance = accounts.stream()
-                                      .mapToDouble(Account::getBalance)
-                                      .sum();
-        return loanAmount <= (totalBalance * 0.8);
+        if(accounts.size()>0) {
+            double totalBalance = accounts.stream()
+                    .mapToDouble(Account::getBalance)
+                    .sum();
+            return loanAmount <= (totalBalance * 0.8);
+        } else throw new OwnerNotFoundException(customerId);
     }
 
 
