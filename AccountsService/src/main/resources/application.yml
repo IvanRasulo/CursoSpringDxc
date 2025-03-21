@@ -31,6 +31,10 @@ spring:
   h2:
     console.enabled: true
     console.path: /h2-ui
+  sql:
+    init:
+      #schema-locations: classpath:sql/schema.sql # Define el archivo de esquema (opcional)
+      data-locations: classpath:sql/data.sql     # Ubicación del archivo de datos
 
 server:
   port: 9900
