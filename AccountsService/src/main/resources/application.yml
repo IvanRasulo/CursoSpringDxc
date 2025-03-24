@@ -11,6 +11,17 @@ server:
     include-stacktrace: on_param
     include-exception: false
 
+accounts.openapi.dev-url: "http://localhost:9900"
+accounts.openapi.prod-url: "http://localhost:9443/api/v1"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+
 ---
 spring:
   config.activate.on-profile: dev
@@ -45,6 +56,9 @@ logging:
   level:
     root: DEBUG
 
+springdoc:
+  api-docs.enabled: true # Swagger habilitado en dev
+
 ---
 spring:
   config.activate.on-profile: prod
@@ -71,3 +85,6 @@ logging:
   file: /var/logs/accounts.log
   level:
     root: ERROR
+
+springdoc:
+  api-docs.enabled: false # Swagger deshabilitado en prod
