@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestEntityManager
 @ComponentScan(basePackages = {"com.microcompany.productsservice"})
-//(@Sql(value = "classpath:testing.sql")
+@Sql(value = "classpath:testing.sql")
 public class JPAAccountsRepositoryTest {
 
     private static final Logger logger = LoggerFactory.getLogger(JPAAccountsRepositoryTest.class);
@@ -48,7 +48,7 @@ public class JPAAccountsRepositoryTest {
     public void testFindByOwnerId_MultipleAccounts() {
         List<Account> accounts = jpaAccountRepo.findByOwnerId(2L);
         assertNotNull(accounts);
-        assertEquals(1, accounts.size());
+        assertEquals(2, accounts.size());
         assertEquals(2L, accounts.get(0).getOwnerId());
         assertEquals("Current", accounts.get(0).getType());
         assertEquals(12000, accounts.get(0).getBalance());

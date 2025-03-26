@@ -42,9 +42,6 @@ spring:
   h2:
     console.enabled: true
     console.path: /h2-ui
-  sql:
-    init:
-      data-locations: classpath:sql/data.sql
 
 server:
   port: 9900
