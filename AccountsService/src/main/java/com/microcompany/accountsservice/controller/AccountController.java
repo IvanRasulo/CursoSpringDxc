@@ -48,7 +48,7 @@ public class AccountController implements IAccountController{
 
     @Override
     public ResponseEntity updateAccount(Long id, Account account) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED.value()).body( servicioAccount.updateAccount(id, account));
+        return ResponseEntity.status(HttpStatus.OK.value()).body( servicioAccount.updateAccount(id, account));
     }
 
     @Override
