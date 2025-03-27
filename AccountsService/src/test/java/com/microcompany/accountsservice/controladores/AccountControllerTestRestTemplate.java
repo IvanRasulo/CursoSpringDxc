@@ -41,7 +41,6 @@ public class AccountControllerTestRestTemplate {
     }
     @Test
     public void givenNonExistingAccountId_whenGetAccount_thenNotFoundShouldBeReturned() throws Exception {
-        // Asumimos que la cuenta con ID 999 no existe
         Long nonExistingAccountId = 999L;
 
         HttpHeaders headers = new HttpHeaders();
@@ -60,7 +59,6 @@ public class AccountControllerTestRestTemplate {
 
     @Test
     public void givenExistingAccountId_whenDeleteAccount_thenNoContentShouldBeReturned() throws Exception {
-        // Asumimos que la cuenta con ID 1 existe
         Long existingAccountId = 1L;
 
         HttpHeaders headers = new HttpHeaders();
@@ -79,7 +77,6 @@ public class AccountControllerTestRestTemplate {
 
     @Test
     public void givenNonExistingAccountId_whenDeleteAccount_thenNotFoundShouldBeReturned() throws Exception {
-        // Asumimos que la cuenta con ID 999 no existe
         Long nonExistingAccountId = 999L;
 
         HttpHeaders headers = new HttpHeaders();
@@ -97,20 +94,17 @@ public class AccountControllerTestRestTemplate {
     }
     @Test
     public void givenValidAccount_whenCreateAccount_thenAccountShouldBeCreated() throws Exception {
-        // Crear un objeto Account con datos válidos
         Account newAccount = new Account();
         newAccount.setType("Ahorro");
         newAccount.setOpeningDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-01-01"));
-        newAccount.setBalance(1000);  // Balance positivo
-        newAccount.setOwnerId(1L);  // ID del propietario válido
+        newAccount.setBalance(1000);
+        newAccount.setOwnerId(1L);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        // Convertir el objeto Account a JSON
         String accountJson = new ObjectMapper().writeValueAsString(newAccount);
 
-        // Crear el HttpEntity con el objeto Account
         HttpEntity<String> entity = new HttpEntity<>(accountJson, headers);
 
         ResponseEntity<Account> response = restTemplate.exchange(
@@ -129,20 +123,17 @@ public class AccountControllerTestRestTemplate {
 
     @Test
     public void givenInvalidAccount_whenCreateAccount_thenPreconditionFailedShouldBeReturned() throws Exception {
-        // Crear un objeto Account con datos inválidos
         Account newAccount = new Account();
-        newAccount.setType(null);  // Tipo nulo
+        newAccount.setType(null);
         newAccount.setOpeningDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-01-01"));
-        newAccount.setBalance(-100);  // Balance negativo (no permitido)
-        newAccount.setOwnerId(1L);  // ID del propietario válido
+        newAccount.setBalance(-100);
+        newAccount.setOwnerId(1L);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        // Convertir el objeto Account a JSON
         String accountJson = new ObjectMapper().writeValueAsString(newAccount);
 
-        // Crear el HttpEntity con el objeto Account
         HttpEntity<String> entity = new HttpEntity<>(accountJson, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
@@ -157,23 +148,19 @@ public class AccountControllerTestRestTemplate {
 
     @Test
     public void givenExistingAccountId_whenUpdateAccount_thenAccountShouldBeUpdated() throws Exception {
-        // Asumimos que la cuenta con ID 1 existe
         Long existingAccountId = 5L;
 
-        // Crear un objeto Account con los nuevos datos válidos
         Account updatedAccount = new Account();
         updatedAccount.setType("Corriente");
         updatedAccount.setOpeningDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-05-01"));
-        updatedAccount.setBalance(2000);  // Balance válido
-        updatedAccount.setOwnerId(2L);  // ID del propietario válido
+        updatedAccount.setBalance(2000);
+        updatedAccount.setOwnerId(2L);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        // Convertir el objeto Account a JSON
         String accountJson = new ObjectMapper().writeValueAsString(updatedAccount);
 
-        // Crear el HttpEntity con el objeto Account
         HttpEntity<String> entity = new HttpEntity<>(accountJson, headers);
 
         ResponseEntity<Account> response = restTemplate.exchange(
@@ -192,26 +179,21 @@ public class AccountControllerTestRestTemplate {
 
     @Test
     public void givenInvalidAccount_whenUpdateAccount_thenBadRequestShouldBeReturned() throws Exception {
-        // Asumimos que la cuenta con ID 999 no existe
         Long nonExistingAccountId = 999L;
 
-        // Crear un objeto Account con datos inválidos
         Account updatedAccount = new Account();
-        updatedAccount.setType("dsadasd");  // Tipo nulo (no permitido)
+        updatedAccount.setType("dsadasd");
         updatedAccount.setOpeningDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-05-01"));
-        updatedAccount.setBalance(2000);  // Balance negativo (no permitido)
-        updatedAccount.setOwnerId(2L);  // ID del propietario válido
+        updatedAccount.setBalance(2000);
+        updatedAccount.setOwnerId(2L);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        // Convertir el objeto Account a JSON
         String accountJson = new ObjectMapper().writeValueAsString(updatedAccount);
 
-        // Crear el HttpEntity con el objeto Account
         HttpEntity<String> entity = new HttpEntity<>(accountJson, headers);
 
-        // Intentar actualizar con un ID no existente
         ResponseEntity<String> response = restTemplate.exchange(
                 "http://localhost:" + port + "/accounts/update/" + nonExistingAccountId,
                 HttpMethod.PUT,
