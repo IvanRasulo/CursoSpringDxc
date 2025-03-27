@@ -14,6 +14,8 @@ server:
 accounts.openapi.dev-url: "http://localhost:9900"
 accounts.openapi.prod-url: "http://localhost:9443/api/v1"
 
+app.jwt.secret: SECRET-KEY-VALUE
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -21,6 +23,7 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: alpha
     tagsSorter: alpha
+
 
 ---
 spring:
@@ -45,6 +48,8 @@ spring:
 
 server:
   port: 9900
+
+app.jwt.secret: SECRET-KEY-VALUE
 
 logging:
   path: /var/logs/

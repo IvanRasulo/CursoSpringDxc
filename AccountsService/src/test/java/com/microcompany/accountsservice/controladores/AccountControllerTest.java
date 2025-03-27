@@ -63,7 +63,7 @@ public class AccountControllerTest {
         invalidAccount.setOpeningDate(new Date());
         invalidAccount.setBalance(-100); // Invalid balance
         invalidAccount.setOwnerId(1L);
-        
+
 
         assertThrows(ConstraintViolationException.class, () -> {
             controller.create(invalidAccount);
