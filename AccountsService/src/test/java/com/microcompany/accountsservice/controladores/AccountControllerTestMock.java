@@ -3,10 +3,14 @@ package com.microcompany.accountsservice.controladores;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microcompany.accountsservice.exception.AccountNotfoundException;
 import com.microcompany.accountsservice.model.Account;
+import com.microcompany.accountsservice.model.ERole;
 import com.microcompany.accountsservice.services.AccountService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,11 +30,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class AccountControllerTestMock {
 
+    @Value("${app.jwt.secret}")
+    private static String SECRET_KEY;
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private AccountService accountService;
+
+public static String generateJwtToken(String username, ERole role) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", role.name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();  // Genera el token
+    }
 
     @Test
     public void givenExistingAccountId_whenGetAccount_thenReturnAccount() throws Exception {
@@ -43,9 +61,12 @@ public class AccountControllerTestMock {
 
         Mockito.when(accountService.getAccount(accountId)).thenReturn(mockAccount);
 
+        String jwtToken = generateJwtToken("cajero@mail.com", ERole.CAJERO);
+
         mockMvc.perform(get("/accounts/{id}", accountId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())  // Verificar que el código de estado sea 200
+                        .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.type").value("Ahorro"))
                 .andExpect(jsonPath("$.balance").value(5000));
     }
